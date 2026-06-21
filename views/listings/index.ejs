@@ -1,0 +1,114 @@
+<% layout("/layouts/boilerplate") %>
+
+    <div id="filters" class="filters-bar">
+        <div class="filters-scroll" role="toolbar" aria-label="Listing category filters">
+        <div class="filter" data-filter="trending" role="button" tabindex="0" aria-label="Filter trending listings">
+          <div><i class="fa-solid fa-fire"></i></div>
+            <p>Trending</p>
+        </div>
+        <div class="filter" data-filter="rooms" role="button" tabindex="0" aria-label="Filter rooms">
+            <div><i class="fa-solid fa-bed"></i></div>
+            <p>Rooms</p>
+        </div>
+        <div class="filter" data-filter="iconic-cities" role="button" tabindex="0" aria-label="Filter iconic cities">
+            <div><i class="fa-solid fa-mountain-city"></i></div>
+            <p>Iconic Cities</p>
+        </div>
+        <div class="filter" data-filter="mountains" role="button" tabindex="0" aria-label="Filter mountains">
+            <div><i class="fa-solid fa-mountain"></i></div>
+            <p>Mountains</p>
+        </div> 
+        <div class="filter" data-filter="castles" role="button" tabindex="0" aria-label="Filter castles">
+            <div><i class="fa-brands fa-fort-awesome"></i></div>
+            <p>Castles</p>
+        </div> 
+        <div class="filter" data-filter="pools" role="button" tabindex="0" aria-label="Filter amazing pools">
+            <div><i class="fa-solid fa-person-swimming"></i></div>
+            <p>Amazing Pools</p>
+        </div>
+        <div class="filter" data-filter="camping" role="button" tabindex="0" aria-label="Filter camping">
+            <div><i class="fa-solid fa-campground"></i></div>
+            <p>Camping</p>
+        </div>
+        <div class="filter" data-filter="farms" role="button" tabindex="0" aria-label="Filter farms">
+            <div><i class="fa-solid fa-cow"></i></div>
+            <p>Farms</p>
+        </div>
+        <div class="filter" data-filter="arctic" role="button" tabindex="0" aria-label="Filter arctic">
+            <div><i class="fa-regular fa-snowflake"></i></div>
+            <p>Arctic</p>
+        </div>
+
+        <div class="filter" data-filter="domes" role="button" tabindex="0" aria-label="Filter domes">
+            <div><i class="fa-solid fa-igloo"></i></div>
+            <p>Domes</p>
+        </div>
+
+        <div class="filter" data-filter="boats" role="button" tabindex="0" aria-label="Filter boats">
+            <div><i class="fa-solid fa-ship"></i></div>
+            <p>Boats</p>
+        </div>
+        </div>
+
+        <div class="tax-toggle">
+            <div class="form-check-reverse form-switch">
+                <input 
+                   class="form-check-input" 
+                   type="checkbox" 
+                   role="switch" 
+                   id="switchCheckDefault"
+                />
+                <label class="form-check-label" for="switchCheckDefault">
+                    Display total after taxes</label>
+            </div>
+        </div>
+    </div>
+
+    <p id="no-listings-message" hidden>No listings match your search or filter.</p>
+
+    <div id="listings-grid" class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 mt-3 g-3">
+    <% for(let listing of allListings) { %>
+    <a 
+        href="/listings/<%= listing._id %>" 
+        class="listing-link listing-item col"
+        data-title="<%= (listing.title || '').replace(/"/g, '&quot;') %>"
+        data-location="<%= (listing.location || '').replace(/"/g, '&quot;') %>"
+        data-description="<%= (listing.description || '').replace(/"/g, '&quot;') %>"
+        data-country="<%= (listing.country || '').replace(/"/g, '&quot;') %>"
+        data-category="<%= listing.category || '' %>"
+    >
+    <div class="card listing-card">
+      <img 
+          src="<%=listing.image.url%>" 
+          class="card-img-top listing-card-img" 
+          alt="listing_image" 
+      />
+      <div class="card-img-overlay"></div>
+      <div class="card-body">
+        <p class="card-text">
+            <b><%= listing.title %></b> <br>
+            <%= listing.location %>, <%= listing.country %><br>
+            &#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") : "Price Not Available" %> /night
+            <i class="tax-info"> &nbsp;+18% GST</i>
+        </p>
+      </div>
+    </div>
+    </a>
+    <% } %>
+    </div>
+    
+
+<script>
+    let taxSwitch = document.getElementById("switchCheckDefault");
+    taxSwitch.addEventListener("click", () => {
+        let taxInfo = document.getElementsByClassName("tax-info");
+        for(info of taxInfo) {
+            if(info.style.display != "inline") {
+                info.style.display = "inline";
+            } else {
+                info.style.display = "none";
+            }
+        }
+    });
+</script>
+<script src="/js/listing-filters.js"></script>
